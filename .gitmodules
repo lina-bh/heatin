@@ -1,0 +1,3 @@
+[submodule "libsensors-cpp"]
+	path = libsensors-cpp
+	url = https://github.com/sfranzen/libsensors-cpp
