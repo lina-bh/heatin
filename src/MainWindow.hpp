@@ -1,20 +1,19 @@
 #pragma once
 
-#include <QMainWindow>
-#include <QToolBar>
-#include <QTreeView>
-#include <QStandardItemModel>
-
-#include "SensorsController.h"
+#include <qmainwindow.h> 
+#include <qobjectdefs.h>  
+#include <qstring.h>      
+#include <qobject.h>
+class QTreeView;
+class SensorsController;
 
 class MainWindow final : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-
-private:
+    explicit MainWindow();
+    
     // void create_toolbar();
     // QToolBar* toolbar;
     QTreeView* view_;

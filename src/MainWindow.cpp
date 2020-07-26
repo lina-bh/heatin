@@ -1,6 +1,9 @@
-#include "MainWindow.h"
+#include "MainWindow.hpp"
+#include "SensorsController.hpp" 
+#include <qstandarditemmodel.h>
+#include <qtreeview.h>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
+MainWindow::MainWindow() : QMainWindow(nullptr)
 {
     view_ = new QTreeView(this);
 
@@ -8,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     view_->setModel(controller_->model());
     view_->expandAll();
+    view_->resizeColumnToContents(0);
 
     setCentralWidget(view_);
 }
