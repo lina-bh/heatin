@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-static char cpu_name[49] = {0}; // NOLINT(*-c-arrays,*-magic-numbers-*)
+static char cpu_name[49] = {0};
 
 const char* get_cpu_name(void);
 

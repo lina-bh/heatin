@@ -32,6 +32,7 @@ std::optional<std::string> PCI::device_name(const sensors::chip_name& chip) {
 
     constexpr int bufsiz = 1024;
     std::array<char, bufsiz> buf{};
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
     const auto* name = pci_lookup_name(pacc_, buf.data(), buf.size(), PCI_LOOKUP_VENDOR | PCI_LOOKUP_DEVICE, ven, dev);
     return name;
 }
