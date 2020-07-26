@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.10)
 
 project(heatin)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 #set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 #set(CMAKE_AUTORCC ON)
@@ -12,30 +10,15 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-set(CMAKE_BUILD_TYPE Debug)
-
-if(CMAKE_BUILD_TYPE MATCHES DEBUG)
-    set(CMAKE_C_COMPILER clang)
-    set(CMAKE_CXX_COMPILER clang++)
-endif()
-
-set(CMAKE_C_FLAGS_DEBUG "-Og -ggdb")
-set(CMAKE_CXX_FLAGS_DEBUG "-Og -ggdb")
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED) # Charts
 
-add_library(sensors-c++ 
-    libsensors-cpp/src/sensors.cpp
-    libsensors-cpp/src/error.cpp
-)
-include_directories(libsensors-cpp/include)
+add_subdirectory(extern/libsensors-cpp)
 
 set(CMAKE_CXX_CLANG_TIDY 
     clang-tidy;
-    -checks=*,-fuchsia-default-arguments-*,-modernize-use-trailing-return-type,-llvm-header-guard,-cppcoreguidelines-owning-memory,-readability-named-parameter,-*-special-member-functions,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg,-*-namespace-comment*,-*-uppercase-literal-suffix;
+    -checks=*,-fuchsia-default-arguments-*,-modernize-use-trailing-return-type,-llvm-header-guard,-readability-named-parameter,-*-special-member-functions,-*-namespace-comment*,-*-uppercase-literal-suffix,-cppcoreguidelines-owning-memory;
     -header-filter=src/*.hpp;)
 
 set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE 
@@ -44,6 +27,13 @@ set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE
     -Xiwyu --quoted_includes_first;
     -Xiwyu --no_fwd_decls)
 
-file(GLOB SOURCES src/*.c src/*.cpp src/*.h src/*.hpp)
-add_executable(heatin ${SOURCES})
+add_executable(heatin
+    src/CPU.c
+    src/main.cpp
+    src/MainWindow.cpp
+    src/Measurement.cpp
+    src/PCI.cpp
+    src/SensorsController.cpp
+    src/SensorsUtil.cpp
+)
 target_link_libraries(heatin PRIVATE pci Qt5::Widgets sensors sensors-c++)
