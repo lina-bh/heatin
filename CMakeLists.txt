@@ -15,6 +15,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(Qt5 COMPONENTS Widgets REQUIRED) # Charts
 
 add_subdirectory(extern/libsensors-cpp)
+set_target_properties(sensortest PROPERTIES EXCLUDE_FROM_ALL 1)
 
 set(CMAKE_CXX_CLANG_TIDY 
     clang-tidy;
