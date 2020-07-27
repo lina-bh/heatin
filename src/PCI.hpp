@@ -2,9 +2,6 @@
 
 #include <sensors-c++/sensors.h>
 
-#include <optional>
-#include <string>
-
 class PCI final {
 public:
     PCI();

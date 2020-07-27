@@ -1,9 +1,7 @@
 #pragma once
 
-#include <qmainwindow.h>
-#include <qobject.h>
-#include <qobjectdefs.h>
-#include <qstring.h>
+#include <QMainWindow>
+#include <QObject>
 class QTreeView;
 class SensorsController;
 

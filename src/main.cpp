@@ -1,7 +1,5 @@
-#include <qapplication.h>
-#include <qsettings.h>
-#include <qsize.h>
-#include <qvariant.h>
+#include <QApplication>
+#include <QSettings>
 
 #include "MainWindow.hpp"
 

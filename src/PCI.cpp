@@ -1,8 +1,6 @@
 #include "PCI.hpp"
 
-#include <array>
 #include <fstream>
-#include <string_view>
 extern "C" {
 #include <pci/pci.h>
 }

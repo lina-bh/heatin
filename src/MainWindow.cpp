@@ -1,7 +1,6 @@
 #include "MainWindow.hpp"
 
-#include <qstandarditemmodel.h>
-#include <qtreeview.h>
+#include <QTreeView>
 
 #include "SensorsController.hpp"
 
