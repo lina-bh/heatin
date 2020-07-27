@@ -2,7 +2,7 @@
 
 #include <cpuid.h>
 
-const unsigned int CPUID_BRAND_STRING = 0x80000002;
+static const unsigned int CPUID_BRAND_STRING = 0x80000002;
 
 const char* get_cpu_name(void) {
     if (cpu_name[0] == '\0') {
