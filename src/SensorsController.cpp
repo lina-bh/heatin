@@ -1,8 +1,12 @@
 #include "SensorsController.hpp"
 
+#include <qnamespace.h>
 #include <sensors-c++/error.h>
+#include <sensors-c++/sensors.h>
 
 #include <QTimer>
+#include <string_view>
+#include <utility>
 
 #include "CPU.h"
 #include "SensorsUtil.hpp"

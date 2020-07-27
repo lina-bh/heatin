@@ -1,6 +1,7 @@
 #include "Measurement.hpp"
 
 #include <QStandardItem>
+#include <utility>
 
 Measurement::Measurement(sensors::subfeature subfeature) : feature(std::move(subfeature)) {
     value_col = new QStandardItem();

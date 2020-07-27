@@ -1,22 +1,22 @@
 #pragma once
 
-// #include <qlist.h>
-// #include <qobject.h>
-// #include <qobjectdefs.h>
-// #include <qstandarditemmodel.h>
-// #include <qstring.h>
-// #include <qtimer.h>
-// #include <sensors-c++/sensors.h>
+#include <qobjectdefs.h>
+
+#include <QList>
 #include <QObject>
+#include <QStandardItem>
 #include <QStandardItemModel>
 #include <chrono>
-// #include <vector>
+#include <vector>
 
 #include "Measurement.hpp"
 #include "PCI.hpp"
-class QStandardItem;
-class QStandardItemModel;
+
 class QTimer;
+namespace sensors {
+class chip_name;
+class subfeature;
+}
 
 using namespace std::literals::chrono_literals;  // NOLINT(google-global-names-in-headers)
 

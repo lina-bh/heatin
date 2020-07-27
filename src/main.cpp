@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QSettings>
+#include <QSize>
 
 #include "MainWindow.hpp"
 

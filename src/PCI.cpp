@@ -1,9 +1,13 @@
 #include "PCI.hpp"
 
+#include <array>
 #include <fstream>
 extern "C" {
 #include <pci/pci.h>
 }
+#include <sensors-c++/sensors.h>
+
+#include <string_view>
 
 PCI::PCI() {
     pacc_ = pci_alloc();

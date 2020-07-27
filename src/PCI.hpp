@@ -1,6 +1,10 @@
 #pragma once
 
-#include <sensors-c++/sensors.h>
+#include <optional>
+#include <string>
+namespace sensors {
+class chip_name;
+}
 
 class PCI final {
 public:
