@@ -21,11 +21,15 @@ set(CMAKE_CXX_CLANG_TIDY
     -checks=*,-fuchsia-default-arguments-*,-modernize-use-trailing-return-type,-llvm-header-guard,-readability-named-parameter,-*-special-member-functions,-*-namespace-comment*,-*-uppercase-literal-suffix,-cppcoreguidelines-owning-memory;
     -header-filter=src/*.hpp;)
 
-set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE 
-    include-what-you-use;
-    -Xiwyu --no_comments;
-    -Xiwyu --quoted_includes_first;
-    -Xiwyu --no_fwd_decls)
+# set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE 
+#     include-what-you-use;
+#     -Xiwyu --no_comments;
+#     -Xiwyu --quoted_includes_first;
+#     -Xiwyu --no_fwd_decls)
+
+set(CMAKE_CXX_CPPCHECK
+    cppcheck;
+    --std=c++17)
 
 add_executable(heatin
     src/CPU.c
