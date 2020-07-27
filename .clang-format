@@ -1,0 +1,7 @@
+BasedOnStyle: Google
+FixNamespaceComments: false
+ColumnLimit: 0
+IndentWidth: 4
+AccessModifierOffset: -4
+SpaceBeforeRangeBasedForLoopColon: false
+IndentCaseLabels: false

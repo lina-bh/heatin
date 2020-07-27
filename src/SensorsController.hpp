@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Measurement.hpp"
-#include "PCI.hpp"
 #include <qlist.h>
 #include <qobject.h>
 #include <qobjectdefs.h>
@@ -9,13 +7,16 @@
 #include <qstring.h>
 #include <qtimer.h>
 #include <sensors-c++/sensors.h>
+
 #include <chrono>
 #include <vector>
 
-using namespace std::literals::chrono_literals; // NOLINT(google-global-names-in-headers)
+#include "Measurement.hpp"
+#include "PCI.hpp"
 
-class SensorsController final : public QObject
-{
+using namespace std::literals::chrono_literals;  // NOLINT(google-global-names-in-headers)
+
+class SensorsController final : public QObject {
     Q_OBJECT
 
 public:

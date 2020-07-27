@@ -1,4 +1,5 @@
 #include "SensorsUtil.hpp"
+
 #include <sensors-c++/error.h>
 
 namespace SensorsUtil {

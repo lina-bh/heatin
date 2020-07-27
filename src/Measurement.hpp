@@ -1,7 +1,7 @@
 #pragma once
 
-#include <sensors-c++/sensors.h>
 #include <qstandarditemmodel.h>
+#include <sensors-c++/sensors.h>
 
 class Measurement final {
     friend class SensorsController;

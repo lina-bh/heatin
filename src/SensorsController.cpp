@@ -1,12 +1,15 @@
-#include "CPU.h"
 #include "SensorsController.hpp"
-#include "SensorsUtil.hpp"
-#include <algorithm>
-#include <optional>
+
 #include <qnamespace.h>
 #include <sensors-c++/error.h>
+
+#include <algorithm>
+#include <optional>
 #include <string_view>
 #include <utility>
+
+#include "CPU.h"
+#include "SensorsUtil.hpp"
 
 SensorsController::SensorsController(QObject* parent) : QObject(parent) {
     model_ = new QStandardItemModel(this);
@@ -29,9 +32,7 @@ SensorsController::SensorsController(QObject* parent) : QObject(parent) {
     start();
 }
 
-SensorsController::~SensorsController() {
-    stop();
-}
+SensorsController::~SensorsController() { stop(); }
 
 void SensorsController::add_chip(const sensors::chip_name& chip) {
     bool has_inputs = false;
@@ -47,9 +48,7 @@ void SensorsController::add_chip(const sensors::chip_name& chip) {
     }
     QString name;
     if (!device_name.isEmpty()) {
-        name = QString("%1 (%2)")
-            .arg(device_name.trimmed())
-            .arg(module);
+        name = QString("%1 (%2)").arg(device_name.trimmed()).arg(module);
     } else {
         name = QString(module);
     }
@@ -84,9 +83,7 @@ void SensorsController::start(std::chrono::milliseconds tick) {
     timer_->start(tick);
 }
 
-void SensorsController::stop() {
-    timer_->stop();
-}
+void SensorsController::stop() { timer_->stop(); }
 
 void SensorsController::update() {
     for (auto& sub: measurements_) {

@@ -1,8 +1,9 @@
-#include "MainWindow.hpp"
 #include <qapplication.h>
 #include <qsettings.h>
 #include <qsize.h>
 #include <qvariant.h>
+
+#include "MainWindow.hpp"
 
 constexpr int DEFAULT_WIDTH = 500;
 constexpr int DEFAULT_HEIGHT = 600;

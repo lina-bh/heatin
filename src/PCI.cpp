@@ -1,4 +1,5 @@
 #include "PCI.hpp"
+
 #include <array>
 #include <fstream>
 #include <string_view>
@@ -11,9 +12,7 @@ PCI::PCI() {
     pci_init(pacc_);
 }
 
-PCI::~PCI() {
-    pci_cleanup(pacc_);
-}
+PCI::~PCI() { pci_cleanup(pacc_); }
 
 std::optional<std::string> PCI::device_name(const sensors::chip_name& chip) {
     std::string hwmon_path(chip.path().data());

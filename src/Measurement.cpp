@@ -1,5 +1,7 @@
 #include "Measurement.hpp"
+
 #include <qstandarditemmodel.h>
+
 #include <utility>
 
 Measurement::Measurement(sensors::subfeature subfeature) : feature(std::move(subfeature)) {

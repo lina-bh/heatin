@@ -1,10 +1,11 @@
 #include "MainWindow.hpp"
-#include "SensorsController.hpp" 
+
 #include <qstandarditemmodel.h>
 #include <qtreeview.h>
 
-MainWindow::MainWindow() : QMainWindow(nullptr)
-{
+#include "SensorsController.hpp"
+
+MainWindow::MainWindow() : QMainWindow(nullptr) {
     view_ = new QTreeView(this);
 
     controller_ = new SensorsController(this);
