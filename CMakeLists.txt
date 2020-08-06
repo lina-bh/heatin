@@ -36,9 +36,10 @@ add_executable(heatin
     src/CPU.c
     src/main.cpp
     src/MainWindow.cpp
-    src/Measurement.cpp
     src/PCI.cpp
     src/SensorsController.cpp
     src/SensorsUtil.cpp
+    src/Subfeature.cpp
+    src/Chip.cpp
 )
 target_link_libraries(heatin PRIVATE pci Qt5::Widgets sensors sensors-c++)

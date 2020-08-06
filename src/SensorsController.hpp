@@ -17,8 +17,9 @@ namespace sensors {
 class chip_name;
 class subfeature;
 }
+class Chip;
 
-using namespace std::literals::chrono_literals;  // NOLINT(google-global-names-in-headers)
+using namespace std::literals::chrono_literals; // NOLINT(google-global-names-in-headers)
 
 class SensorsController final : public QObject {
     Q_OBJECT
@@ -33,10 +34,8 @@ private:
     QStandardItem* root_;
     QStandardItemModel* model_;
     QTimer* timer_;
-    std::vector<Measurement> measurements_;
-    PCI pci_;
+    std::vector<Chip> chips_;
 
-    QList<QStandardItem*> add_measurement(const sensors::subfeature&);
     void add_chip(const sensors::chip_name&);
     void start(std::chrono::milliseconds tick = 2000ms);
     void stop();
