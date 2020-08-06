@@ -9,14 +9,14 @@ extern "C" {
 
 #include <string_view>
 
-PCI::PCI() {
-    pacc_ = pci_alloc();
-    pci_init(pacc_);
-}
-
-PCI::~PCI() { pci_cleanup(pacc_); }
+static struct pci_access* pacc = nullptr;
 
 std::optional<std::string> PCI::device_name(const sensors::chip_name& chip) {
+    if (pacc == nullptr) {
+        pacc = pci_alloc();
+        pci_init(pacc);
+    }
+
     std::string hwmon_path(chip.path().data());
 
     std::ifstream fdev((hwmon_path + "/device/device").c_str());
@@ -34,6 +34,6 @@ std::optional<std::string> PCI::device_name(const sensors::chip_name& chip) {
     constexpr int bufsiz = 1024;
     std::array<char, bufsiz> buf{};
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg, hicpp-vararg)
-    const auto* name = pci_lookup_name(pacc_, buf.data(), buf.size(), PCI_LOOKUP_VENDOR | PCI_LOOKUP_DEVICE, ven, dev);
+    const auto* name = pci_lookup_name(pacc, buf.data(), buf.size(), PCI_LOOKUP_VENDOR | PCI_LOOKUP_DEVICE, ven, dev);
     return name;
 }
