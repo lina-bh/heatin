@@ -2,9 +2,12 @@
 
 #include <sensors-c++/sensors.h>
 
+#include <QStandardItem>
+
 namespace SensorsUtil {
 
 bool can_read(const sensors::subfeature& subfeature);
+QStandardItem* new_chip_row(const sensors::chip_name&);
 
 constexpr const char* unit(const sensors::feature_type& type) {
     using sensors::feature_type;

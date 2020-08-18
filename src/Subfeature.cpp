@@ -6,29 +6,26 @@
 #include <utility>
 
 #include "SensorsController.hpp"
-#include "SensorsUtil.hpp"
 
 Subfeature::Subfeature(sensors::subfeature subfeature) : source_(std::move(subfeature)) {
-    value_col_ = new QStandardItem();
-    min_col_ = new QStandardItem();
-    max_col_ = new QStandardItem();
-    min_ = max_ = 0.0f;
+    // value_col_ = new QStandardItem();
+    // min_col_ = new QStandardItem();
+    // max_col_ = new QStandardItem();
+    max_ = 0.0f;
+    min_ = std::numeric_limits<double>::max();
 }
 
-void Subfeature::update() {
-    const auto* unit = SensorsUtil::unit(source_.feature().type());
+double Subfeature::update() {
     try {
         auto value = source_.read();
-        value_col_->setText(QString("%1%2").arg(value).arg(unit));
-        if (value < min_ || min_col_->text().isEmpty()) {
+        if (value < min_) {
             min_ = value;
-            min_col_->setText(QString("%1%2").arg(value).arg(unit));
         }
-        if (value > max_ || max_col_->text().isEmpty()) {
+        if (value > max_) {
             max_ = value;
-            max_col_->setText(QString("%1%2").arg(value).arg(unit));
         }
+        return value;
     } catch (sensors::io_error& ex) {
-        value_col_->setText(SensorsController::tr("cannot be read %1").arg(ex.what()));
+        return 0.0;
     }
 }

@@ -1,23 +1,20 @@
 #pragma once
 
-#include <qobjectdefs.h>
-
-#include <QList>
 #include <QObject>
-#include <QStandardItem>
-#include <QStandardItemModel>
 #include <chrono>
+#include <memory>
 #include <vector>
 
-#include "Measurement.hpp"
-#include "PCI.hpp"
+#include "Updateable.hpp"
 
 class QTimer;
+class QStandardItem;
+class QStandardItemModel;
 namespace sensors {
 class chip_name;
-class subfeature;
 }
-class Chip;
+
+constexpr auto ROW_SOURCE_ROLE = Qt::UserRole + 1;
 
 using namespace std::literals::chrono_literals; // NOLINT(google-global-names-in-headers)
 
@@ -34,10 +31,12 @@ private:
     QStandardItem* root_;
     QStandardItemModel* model_;
     QTimer* timer_;
-    std::vector<Chip> chips_;
+    std::vector<std::unique_ptr<Updateable>> sources;
 
-    void add_chip(const sensors::chip_name&);
     void start(std::chrono::milliseconds tick = 2000ms);
     void stop();
     void update();
+    void add_chips();
+
+    static QList<QStandardItem*> new_row(const std::string& name);
 };

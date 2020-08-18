@@ -1,23 +1,24 @@
 #pragma once
 
 #include <sensors-c++/sensors.h>
-class QStandardItem;
-#include "Measurement.hpp"
 
-class Subfeature final {
+#include "SensorsUtil.hpp"
+#include "Updateable.hpp"
+
+class QStandardItem;
+
+class Subfeature final : public Updateable {
 public:
     explicit Subfeature(sensors::subfeature);
 
-    void update();
-    QStandardItem* value_col() const { return value_col_; }
-    QStandardItem* min_col() const { return min_col_; }
-    QStandardItem* max_col() const { return max_col_; }
+    double update() override;
+    double min() const override { return min_; };
+    double max() const override { return max_; };
+    const char* unit() const override { return SensorsUtil::unit(source_.feature().type()); }
+    std::string name() const override { return source_.feature().label(); }
 
 private:
     sensors::subfeature source_;
-    QStandardItem* value_col_;
-    QStandardItem* min_col_;
-    QStandardItem* max_col_;
     double min_;
     double max_;
 };
