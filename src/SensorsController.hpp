@@ -1,20 +1,20 @@
 #pragma once
 
+#include <sensors-c++/sensors.h>
+
 #include <QObject>
+#include <QStandardItem>
+#include <QStandardItemModel>
+#include <QTimer>
 #include <chrono>
 #include <memory>
 #include <vector>
 
 #include "Updateable.hpp"
 
-class QTimer;
-class QStandardItem;
-class QStandardItemModel;
-namespace sensors {
-class chip_name;
-}
-
 constexpr auto ROW_SOURCE_ROLE = Qt::UserRole + 1;
+constexpr auto MIN_ROLE = Qt::UserRole + 2;
+constexpr auto MAX_ROLE = Qt::UserRole + 2;
 
 using namespace std::literals::chrono_literals; // NOLINT(google-global-names-in-headers)
 
@@ -28,15 +28,16 @@ public:
     [[nodiscard]] QStandardItemModel* model() const noexcept { return model_; };
 
 private:
-    QStandardItem* root_;
-    QStandardItemModel* model_;
-    QTimer* timer_;
-    std::vector<std::unique_ptr<Updateable>> sources;
-
     void start(std::chrono::milliseconds tick = 2000ms);
     void stop();
     void update();
     void add_chips();
+    void add_cpus();
 
-    static QList<QStandardItem*> new_row(const std::string& name);
+    QList<QStandardItem*> new_row(std::unique_ptr<Updateable>);
+
+    QStandardItem* root_;
+    QStandardItemModel* model_;
+    QTimer* timer_;
+    std::vector<std::unique_ptr<Updateable>> sources_;
 };

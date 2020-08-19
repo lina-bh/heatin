@@ -1,11 +1,13 @@
 #include "SensorsController.hpp"
 
-#include <sensors-c++/sensors.h>
+#include <sys/sysinfo.h>
 
 #include <QDebug>
-#include <QStandardItemModel>
-#include <QTimer>
+#include <filesystem>
+#include <sstream>
 
+#include "CPU.hpp"
+#include "Frequency.hpp"
 #include "SensorsUtil.hpp"
 #include "Subfeature.hpp"
 
@@ -20,6 +22,7 @@ SensorsController::SensorsController(QObject* parent) : QObject(parent) {
     model_->setHeaderData(3, Qt::Horizontal, tr("Maximum"));
 
     add_chips();
+    add_cpus();
 
     timer_ = new QTimer(this);
     connect(timer_, &QTimer::timeout, this, [this]() { update(); });
@@ -40,13 +43,19 @@ void SensorsController::add_chips() {
                      type == subfeature_type::vid ||
                      type == subfeature_type::unknown) &&
                     SensorsUtil::can_read(subfeature)) {
-                    auto source = std::make_unique<Subfeature>(subfeature);
-                    auto row = new_row(source->name());
-                    row[0]->setData(static_cast<unsigned int>(sources.size()), ROW_SOURCE_ROLE);
-                    sources.push_back(std::move(source));
+                    auto row = new_row(std::make_unique<Subfeature>(subfeature));
                     group->appendRow(row);
                     has_inputs = true;
                 }
+            }
+        }
+        const std::filesystem::path path(chip.path());
+        for (const auto& entry: std::filesystem::directory_iterator(path)) {
+            auto name = entry.path().filename().string();
+            if (name.find("freq") == 0 && name.find("input") != std::string::npos) {
+                auto row = new_row(std::make_unique<Frequency>(entry.path().c_str()));
+                group->appendRow(row);
+                has_inputs = true;
             }
         }
         if (has_inputs) {
@@ -55,6 +64,16 @@ void SensorsController::add_chips() {
             delete group;
         }
     }
+}
+
+void SensorsController::add_cpus() {
+    const auto cpus = get_nprocs();
+    auto* const group = new QStandardItem(QString(CPU::get_name()));
+    for (int i = 0; i < cpus; i++) {
+        auto row = new_row(std::make_unique<CPU>(i));
+        group->appendRow(row);
+    }
+    root_->appendRow(group);
 }
 
 SensorsController::~SensorsController() { stop(); }
@@ -73,16 +92,31 @@ void SensorsController::update() {
             auto* val_col = group->child(j, 1);
             auto* min_col = group->child(j, 2);
             auto* max_col = group->child(j, 3);
+
             auto idx = name_col->data(ROW_SOURCE_ROLE).toUInt();
-            auto& source = sources[idx];
+            auto& source = sources_[idx];
             const auto* unit = source->unit();
-            val_col->setText(QString("%1%2").arg(source->update()).arg(unit));
-            min_col->setText(QString("%1%2").arg(source->min()).arg(unit));
-            max_col->setText(QString("%1%2").arg(source->max()).arg(unit));
+            const auto value = source->update();
+            val_col->setText(QString("%1%2").arg(value).arg(unit));
+            if (value < min_col->data(MIN_ROLE).toDouble()) {
+                min_col->setData(QVariant::fromValue(value), MIN_ROLE);
+                min_col->setText(QString("%1%2").arg(value).arg(unit));
+            }
+            if (value > max_col->data(MAX_ROLE).toDouble() || max_col->text().isEmpty()) {
+                max_col->setData(QVariant::fromValue(value), MAX_ROLE);
+                max_col->setText(QString("%1%2").arg(value).arg(unit));
+            }
         }
     }
 }
 
-QList<QStandardItem*> SensorsController::new_row(const std::string& name) {
-    return {new QStandardItem(QString::fromStdString(name)), new QStandardItem(), new QStandardItem(), new QStandardItem()};
+QList<QStandardItem*> SensorsController::new_row(std::unique_ptr<Updateable> source) {
+    auto* const name_col = new QStandardItem(QString::fromStdString(source->name()));
+    name_col->setData(QVariant::fromValue(sources_.size()), ROW_SOURCE_ROLE);
+    sources_.push_back(std::move(source));
+    auto* const min_col = new QStandardItem();
+    min_col->setData(QVariant::fromValue(std::numeric_limits<double>::max()), MIN_ROLE);
+    auto* const max_col = new QStandardItem();
+    max_col->setData(QVariant(0.0), MAX_ROLE);
+    return {name_col, new QStandardItem(), min_col, max_col};
 }
