@@ -5,7 +5,6 @@
 extern "C" {
 #include <pci/pci.h>
 }
-#include <sensors-c++/sensors.h>
 
 #include <string_view>
 

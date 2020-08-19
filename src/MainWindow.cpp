@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 
+#include <QStandardItemModel>
 #include <QTreeView>
 
 #include "SensorsController.hpp"

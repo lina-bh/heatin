@@ -12,34 +12,44 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_C_COMPILER "clang")
+    set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
 find_package(Qt5 COMPONENTS Widgets REQUIRED) # Charts
 
 add_subdirectory(extern/libsensors-cpp)
 set_target_properties(sensortest PROPERTIES EXCLUDE_FROM_ALL 1)
 
-set(CMAKE_CXX_CLANG_TIDY 
-    clang-tidy;
-    -checks=*,-fuchsia-default-arguments-*,-modernize-use-trailing-return-type,-llvm-header-guard,-readability-named-parameter,-*-special-member-functions,-*-namespace-comment*,-*-uppercase-literal-suffix,-cppcoreguidelines-owning-memory;
-    -header-filter=src/*.hpp;)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_CLANG_TIDY 
+        clang-tidy;
+        -checks=*,-fuchsia-default-arguments-*,-modernize-use-trailing-return-type,-llvm-header-guard,-readability-named-parameter,-*-namespace-comment*,-*-uppercase-literal-suffix,-cppcoreguidelines-owning-memory,-readability-static-accessed-through-instance,cppcoreguidelines-special-member-functions,-abseil-*;
+        -header-filter=*.hpp;)
 
-# set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE 
-#     include-what-you-use;
-#     -Xiwyu --no_comments;
-#     -Xiwyu --quoted_includes_first;
-#     -Xiwyu --no_fwd_decls)
+    # set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE 
+    #     include-what-you-use;
+    #     -Xiwyu --no_comments)
 
-set(CMAKE_CXX_CPPCHECK
-    cppcheck;
-    --std=c++17)
+    set(CMAKE_CXX_CPPCHECK
+        cppcheck;
+        --std=c++17;
+        --enable=warning,style,performance;
+        --inconclusive;
+        --platform=unix64;
+        --inline-suppr;
+        --suppress=preprocessorErrorDirective)
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 add_executable(heatin
-    src/CPU.c
+    src/CPU.cpp
     src/main.cpp
     src/MainWindow.cpp
     src/PCI.cpp
     src/SensorsController.cpp
     src/SensorsUtil.cpp
     src/Subfeature.cpp
-    src/Chip.cpp
+    src/Frequency.cpp
 )
-target_link_libraries(heatin PRIVATE pci Qt5::Widgets sensors sensors-c++)
+target_link_libraries(heatin PRIVATE pci Qt5::Widgets sensors sensors-c++ cpupower)
