@@ -68,7 +68,7 @@ void SensorsController::add_chips() {
 
 void SensorsController::add_cpus() {
     const auto cpus = get_nprocs();
-    auto* const group = new QStandardItem(QString(CPU::get_name()));
+    auto* const group = new QStandardItem(QString(cpu_brand_string()));
     for (int i = 0; i < cpus; i++) {
         auto row = new_row(std::make_unique<CPU>(i));
         group->appendRow(row);

@@ -51,5 +51,6 @@ add_executable(heatin
     src/SensorsUtil.cpp
     src/Subfeature.cpp
     src/Frequency.cpp
+    src/SysfsFile.cpp
 )
-target_link_libraries(heatin PRIVATE pci Qt5::Widgets sensors sensors-c++ cpupower)
+target_link_libraries(heatin PRIVATE pci Qt5::Widgets sensors sensors-c++)

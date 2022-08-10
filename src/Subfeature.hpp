@@ -7,11 +7,14 @@
 
 class Subfeature final : public Updateable {
 public:
+    Subfeature(Subfeature&&) = delete;
+    Subfeature& operator=(Subfeature&&) = delete;
+
     explicit Subfeature(sensors::subfeature);
 
     double update() override;
-    const char* unit() const override { return SensorsUtil::unit(source_.feature().type()); }
-    std::string name() const override { return source_.feature().label(); }
+    const char* unit() const override;
+    std::string name() const override;
 
 private:
     sensors::subfeature source_;
